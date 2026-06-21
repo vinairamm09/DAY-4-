@@ -1,36 +1,43 @@
-# BigQuery Release Hub ⚡
+# Customer Support Agent 🤖🚀
 
-A premium, interactive web application built with **Python Flask** and **Vanilla HTML, CSS, and JavaScript** that fetches, parses, filters, and tweets Google Cloud BigQuery release notes.
+A premium, interactive web application featuring an intelligent customer support representative for a shipping company, powered by **Google ADK 2.0 (Agent Development Kit)** and **Gemini**.
+
+The application uses a graph workflow to classify user queries, conditionally route them to specialized agent nodes, and visually present the **Agent Reasoning Flow** in a modern glassmorphic chat interface.
 
 ---
 
 ## ✨ Features
 
-- **🚀 Live Feed Parsing**: Fetches the official Google Cloud BigQuery XML feed and splits large, date-grouped entries into individual, fine-grained updates.
-- **⚡ Smart Caching**: Backend includes an in-memory cache with a 5-minute TTL to reduce latency and provide offline fallbacks if the Google Cloud feed server is unreachable.
-- **🔍 Real-time Search & Filtering**: Instant client-side search across update descriptions, and category-specific sorting (Features, Announcements, Issues, Changes).
-- **🎨 Glassmorphic Dark UI**: Premium, high-contrast dark interface featuring smooth transitions, glowing state tags, skeleton loaders, and responsive grid layouts.
-- **🐦 Interactive Tweet Composer**: 
-  - Click **Tweet** on any card to auto-generate a formatted message with details and a direct URL.
-  - Multi-select cards to generate a bulleted list for a summary tweet.
-  - Custom composer featuring an SVG circular progress character counter (with warning states for the 280-character limit) and X (Twitter) Web Intent sharing.
-- **📡 Sync Status Badge**: Displays a live indicator mapping the current sync state (Synced, Syncing, or Sync Error) and the last refreshed time.
+- **🧠 ADK 2.0 Graph Workflow**: Utilizes a stateful graph to guide queries through classification and routing.
+- **🔍 Smart Query Classification**: A `classifier` node determines if a query is shipping-related (rates, tracking, delivery, returns) or unrelated.
+- **📦 Shipping FAQ Representative**: A specialized node (`shipping_faq_agent`) that answers shipping questions. It features a playful, enthusiastic, emoji-packed response when discussing shipping rates, highlighting the **FREE SHIPPING for orders over $50** threshold.
+- **⛔ Decline Representative**: A specialized node (`decline_agent`) that politely declines to answer unrelated queries, reinforcing its scope as a shipping agent.
+- **🎨 Glassmorphic Chat UI**: A dark, premium user interface with glowing accents, smooth transitions, custom scrollbars, and Outfit/Plus Jakarta Sans typography.
+- **⏱️ Live Timeline Visualization**: Displays the exact route executed by the workflow in real-time (e.g. `START ➔ classifier ➔ shipping_faq_agent`).
+- **⚙️ Dual Execution Modes**:
+  - **Live Mode**: Input a `GOOGLE_API_KEY` in the slide-out settings drawer to run live Gemini models.
+  - **Simulation Mode**: Automatically falls back to a mocked runner to test the routing and interaction without credentials.
 
 ---
 
 ## 📁 Repository Structure
 
 ```text
-├── app.py                  # Flask Web Server & API feed parser
-├── requirements.txt        # Backend dependencies (Flask, BeautifulSoup4, requests)
-├── .gitignore              # Ignores virtual environments & Python caches
+├── customer-support-agent/     # ADK 2.0 Workflow Package
+│   ├── agent.py                # Workflow definition, nodes (classifier, faq, decline), and edges
+│   ├── __init__.py             # Exposes root workflow agent
+│   ├── requirements.txt        # Workflow-specific dependencies
+│   └── .env                    # Environment config (API Key)
+├── customer_support_app.py     # Flask backend server driving the ADK workflow
+├── requirements.txt            # Root application dependencies
+├── .gitignore                  # Ignores virtual envs, python caches, and local secrets
 ├── templates/
-│   └── index.html          # Semantic HTML5 layout, modals, and skeletons
+│   └── customer_support.html   # Main chat application HTML template
 └── static/
     ├── css/
-    │   └── style.css       # Design tokens, neon glow styles, and CSS transitions
+    │   └── customer_support.css # Modern styling, neon glow, and layout animations
     └── js/
-        └── app.js          # Client-side filtering, checkbox sets, and tweet composers
+        └── customer_support.js  # Chat session management, settings drawer, and API handler
 ```
 
 ---
@@ -41,23 +48,25 @@ A premium, interactive web application built with **Python Flask** and **Vanilla
 Make sure you have Python 3.10+ installed.
 
 ### 1. Installation
-Clone the repository and install the backend dependencies inside a virtual environment:
+Clone the repository and install dependencies in a virtual environment:
 
 ```bash
 # Create and activate virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+.venv\Scripts\activate  # On Windows
 
 # Install requirements
 pip install -r requirements.txt
 ```
 
 ### 2. Run the Application
-Start the Flask development server:
+Start the Flask application server:
 
 ```bash
-python app.py
+python customer_support_app.py
 ```
 
+*Note: The customer support application runs on port **5001** to prevent conflicts with other services.*
+
 ### 3. Open the Application
-Navigate to **[http://127.0.0.1:5000](http://127.0.0.1:5000)** in your browser to explore the dashboard.
+Open your browser and navigate to **[http://127.0.0.1:5001](http://127.0.0.1:5001)**.
