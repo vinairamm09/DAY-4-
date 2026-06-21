@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support Agent ⚡</title>
+    <meta name="description" content="State-of-the-art customer support agent powered by Google ADK 2.0 graph workflow.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customer_support.css') }}">
+</head>
+<body>
+    <!-- Background glowing shapes -->
+    <div class="bg-glow-container">
+        <div class="bg-glow-1"></div>
+        <div class="bg-glow-2"></div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <div class="app-container" id="appContainer">
+        <!-- Header -->
+        <header>
+            <div class="header-title-container">
+                <h1>Customer Support</h1>
+                <p>Shipping Logistics Representative</p>
+            </div>
+            
+            <div class="status-badge-container">
+                <span class="mode-badge mock" id="modeBadge">Simulation Mode</span>
+                <div class="status-badge">
+                    <span class="dot"></span>
+                    <span>ADK Active</span>
+                </div>
+                <button class="btn-settings" id="btnSettings" title="API Settings" aria-label="Open Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Body split-view -->
+        <div class="workspace-body">
+            <!-- Left Pane: Chat Interface -->
+            <main class="chat-pane">
+                <div class="chat-history" id="chatHistory">
+                    <!-- Message bubbles appended here -->
+                </div>
+            </main>
+
+            <!-- Right Pane: Reasoning/Workflow Timeline -->
+            <aside class="flow-pane">
+                <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                    Agent Workflow
+                </h3>
+                
+                <div class="timeline" id="timeline">
+                    <!-- Step 1: Classifier -->
+                    <div class="timeline-item" id="stepClassifier">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Query Classifier</div>
+                            <div class="timeline-desc">Determines if query is shipping-related or unrelated.</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Shipping FAQ -->
+                    <div class="timeline-item" id="stepFaq">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Shipping FAQ Agent</div>
+                            <div class="timeline-desc">Answers questions about rates, delivery, tracking, and returns.</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Decline Node -->
+                    <div class="timeline-item" id="stepDecline">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Decline Node</div>
+                            <div class="timeline-desc">Politely declines to answer non-shipping queries.</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Chat Input Form -->
+        <div class="input-pane">
+            <form class="input-form" id="chatForm">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask about shipping rates, tracking, returns, etc..." autocomplete="off" required>
+                <button type="submit" class="btn-send" id="btnSend">
+                    <span>Send</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- API Key Settings drawer -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <section class="settings-drawer" aria-labelledby="settingsTitle">
+            <div class="drawer-header">
+                <h2 id="settingsTitle">API Configuration</h2>
+                <button class="btn-close" id="btnCloseSettings" title="Close" aria-label="Close Settings">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="drawer-content">
+                <div class="input-group">
+                    <label for="apiKeyInput">Gemini API Key</label>
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." autocomplete="off">
+                </div>
+                
+                <div class="settings-info">
+                    <strong>Note:</strong> Your API key is stored locally in your browser's <code>localStorage</code> and sent securely to your local Flask backend. It is never uploaded to any external server other than Google's official Gemini endpoint. If left empty, the application runs in a simulated mode to demonstrate the graph routing workflow.
+                </div>
+                
+                <button class="btn-save-settings" id="btnSaveSettings">Save API Settings</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/customer_support.js') }}"></script>
+</body>
+</html>
