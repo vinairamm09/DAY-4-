@@ -1,4 +1,4 @@
-# Customer Support Agent 🤖🚀
+# Ambient Expense Agent 🤖🚀
 
 A premium, interactive web application featuring an intelligent customer support representative for a shipping company, powered by **Google ADK 2.0 (Agent Development Kit)** and **Gemini**.
 
